@@ -1,0 +1,45 @@
+services:
+  demo-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: demo-client
+    ports:
+      - "5555:5555/udp"  # управление
+      - "5600:5600"      # телеметрия TCP/UDP
+    environment:
+
+      - CMD_HOST=host.docker.internal # для windows/mac
+      # - TEL_HOST=127.0.0.1            # linux
+      - CMD_PORT=5555
+
+      # адрес, на котором клиент слушает телеметрию:
+      - TEL_HOST=0.0.0.0              # для windows/mac
+      # - TEL_HOST=127.0.0.1            # linux
+
+      - TEL_PORT=5600
+      - PROTO=tcp
+
+
+
+
+      # - SPEEDUP=2
+      #
+      # - CMD_LISTEN_PORT=555
+      # - TELEMETRY_PORT=5600
+      # - TELEMETRY_PROTO=tcp
+      #
+      # # windows/mac
+      # - CMD_LISTEN_HOST=host.docker.internal
+      # - TELEMETRY_HOST=0.0.0.0
+
+      # linux
+      # - CMD_LISTEN_HOST=127.0.0.1
+      # - TELEMETRY_HOST=127.0.0.1
+    
+    volumes:
+      - .:/root
+    working_dir: /root/catkin_ws
+    command: roscore &
+    # extra_hosts: # 👈 важно для Linux
+    #  - "host.docker.internal:host-gateway"
