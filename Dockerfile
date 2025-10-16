@@ -1,14 +1,10 @@
-FROM ros:noetic-ros-core
+FROM python:3.11-slim
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    cmake make g++ gcc \
-	ros-noetic-tf
+WORKDIR /app
 
-COPY catkin_ws /root/catkin_ws
-WORKDIR /root/catkin_ws
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN echo "source /opt/ros/noetic/setup.sh" >> /root/.bashrc
-RUN echo "source /root/catkin_ws/devel/setup.sh" >> /root/.bashrc
+COPY . .
 
-CMD ["bash"]
+# CMD ["python", "main.py"]
