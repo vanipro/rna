@@ -1,0 +1,30 @@
+# Local Costmap Configuration
+local_costmap:
+  global_frame: odom
+  robot_base_frame: base_footprint
+  update_frequency: 10.0
+  publish_frequency: 5.0
+  transform_tolerance: 0.5
+  static_map: false
+  rolling_window: true
+  width: 6.0
+  height: 6.0
+  resolution: 0.1
+  origin_x: -3.0
+  origin_y: -3.0
+  
+  plugins:
+    - {name: custom_layer, type: "grid_maze_costmap/CostmapLayer"}
+  
+  custom_layer:
+    enabled: true
+    cell_size: 1.0
+    grid_width: 8
+    grid_height: 8
+    inflation_radius: 0.3
+    wall_lifetime: 3.0
+    cluster_distance_threshold: 0.2
+    min_cluster_points: 2
+    min_wall_length: 0.3
+    wall_confidence_threshold: 0.6
+    laser_topic: "/scan"

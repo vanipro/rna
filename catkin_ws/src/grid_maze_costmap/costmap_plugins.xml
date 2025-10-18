@@ -1,0 +1,9 @@
+<library path="lib/libgrid_maze_costmap">
+  <class name="grid_maze_costmap/CostmapLayer" 
+         type="grid_maze_costmap::CostmapLayer" 
+         base_class_type="costmap_2d::Layer">
+    <description>
+      grid_maze_costmap
+    </description>
+  </class>
+</library>

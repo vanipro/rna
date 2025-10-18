@@ -1,0 +1,24 @@
+global_costmap:
+  global_frame: map
+  robot_base_frame: base_footprint
+  update_frequency: 5.0
+  publish_frequency: 2.0
+  transform_tolerance: 0.5
+  static_map: false  # Мы используем динамические стены, поэтому статическая карта не нужна
+  rolling_window: true
+  width: 8
+  height: 8
+  resolution: 0.01
+  origin_x: -4.0
+  origin_y: -4.0
+  
+  plugins:
+    - {name: custom_layer, type: "grid_maze_costmap/CostmapLayer"}
+  
+  custom_layer:
+    laser_topic: "/scan"
+
+    point_weight: 40
+    fading_gradient: 0.6
+    update_frequency: 10
+    cell_size: 1.0

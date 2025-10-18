@@ -1,0 +1,9 @@
+<launch>
+  <include file="$(find description)/launch/webots.launch" />
+  <node pkg="controller" type="controller.py" respawn="false" name="controller" output="screen">
+  </node>
+  <include file="$(find navigation)/launch/move_base.launch" />
+
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find navigation)/rviz/default.rviz"/>
+</launch>
