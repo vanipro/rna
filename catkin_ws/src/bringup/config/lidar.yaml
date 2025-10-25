@@ -1,0 +1,10 @@
+# LiDAR Parameters
+ldlidar_stl_ros:
+  port_name: "/dev/ttyUSB0"
+  port_baudrate: 230400
+  
+  frame_id: "laser"
+  angle_min: -3.14159
+  angle_max: 3.14159
+  range_min: 0.05
+  range_max: 12.0

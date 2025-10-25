@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
 	ros-noetic-teleop-twist-joy \
 	ros-noetic-joy \
 	ros-noetic-tf \
+	ros-noetic-tf2-geometry-msgs \
     ros-noetic-xacro \
 	ros-noetic-serial \
 	ros-noetic-foxglove-bridge

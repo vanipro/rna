@@ -1,0 +1,16 @@
+<launch>
+  <include file="$(find foxglove_bridge)/launch/foxglove_bridge.launch"/>
+
+  <node pkg="control" type="controller" name="controller" output="screen">
+    <param name="sim_mode" value="true"/>
+    <param name="use_ros_control" value="true"/>
+    <param name="wheel_base" value="0.153"/>
+    <param name="wheel_radius" value="0.0745"/>
+    <param name="feedback_type" value="none"/>
+  </node>
+
+  <rosparam ns="controller" file="$(find control)/config/ros_controllers.yaml" command="load"/>
+  <node pkg="controller_manager" type="spawner" name="spawner" ns="controller"
+    args="cobra_joint_publisher cobra_velocity_controller" output="screen"/>
+
+</launch>

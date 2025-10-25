@@ -1,0 +1,21 @@
+# Teleop configuration for Cobra robot
+teleop_twist_keyboard:
+  # Linear velocity limits
+  linear_velocity_max: 1.0
+  linear_velocity_min: -0.5
+  
+  # Angular velocity limits  
+  angular_velocity_max: 1.7
+  angular_velocity_min: -1.7
+  
+  # Speed increment/decrement
+  speed_increment: 0.1
+  turn_increment: 0.1
+  
+  # Key bindings
+  key_bindings:
+    k: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0]  # Forward
+    j: [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0] # Backward
+    h: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0]  # Turn left
+    l: [0.0, 0.0, 0.0, 0.0, 0.0, -1.0] # Turn right
+    i: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]  # Stop

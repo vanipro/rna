@@ -1,0 +1,79 @@
+cobra_joint_publisher:
+  type: "joint_state_controller/JointStateController"
+  publish_rate: 50
+
+cobra_velocity_controller:
+  type: "diff_drive_controller/DiffDriveController"
+
+  left_wheel:  ['front_left_wheel', 'rear_left_wheel']
+  right_wheel: ['front_right_wheel','rear_right_wheel']
+
+  wheel_separation: 0.153
+  wheel_radius: 0.0745
+
+  publish_rate: 50
+  cmd_vel_timeout: 0.25
+
+  base_frame_id: base_link
+  odom_frame_id: odom
+  enable_odom_tf: false
+
+  open_loop: true           # КЛЮЧЕВОЕ: не требует обратной связи для старта
+
+
+
+#
+#
+#
+# cobra_joint_publisher:
+#     type: "joint_state_controller/JointStateController"
+#     publish_rate: 50
+#
+# cobra_velocity_controller:
+#     type        : "diff_drive_controller/DiffDriveController"
+#     left_wheel  : ['front_left_wheel', 'rear_left_wheel']
+#     right_wheel : ['front_right_wheel', 'rear_right_wheel']
+#
+#     publish_rate: 50.0
+#
+#     # LSM 
+#     pose_covariance_diagonal:  [0.0009, 0.0009, 1e6, 1e6, 1e6, 0.0076]   
+#     twist_covariance_diagonal: [0.01,   0.01,   1e6, 1e6, 1e6, 0.04]     
+#
+#     # LSM + IMU
+#     # pose_covariance_diagonal:  [0.0016, 0.0016, 1e6, 1e6, 1e6, 0.05]     
+#     # twist_covariance_diagonal: [0.01,   0.01,   1e6, 1e6, 1e6, 0.2]      
+#
+#     enable_odom_tf: false
+#
+#     wheel_separation: 0.153 
+#     wheel_radius: 0.0745
+#
+#     wheel_separation_multiplier: 1.0
+#     wheel_radius_multiplier: 1.0
+#
+#     cmd_vel_timeout: 0.25
+#
+#     base_frame_id: base_link
+#     odom_frame_id: odom
+#
+#     linear:
+#         x:
+#             has_velocity_limits: false
+#             max_velocity: 1.0
+#             min_velocity: -0.5
+#             has_acceleration_limits: false
+#             max_acceleration: 0.8
+#             min_acceleration: -0.4
+#             has_jerk_limits: true
+#             max_jerk: 5.0
+#     angular:
+#         z:
+#             has_velocity_limits: false
+#             max_velocity: 1.7
+#             min_velocity: -1.7
+#             has_acceleration_limits: true
+#             max_acceleration: 1.5
+#             min_acceleration: -1.5
+#             has_jerk_limits: true
+#             max_jerk: 2.5

@@ -1,0 +1,13 @@
+<launch>
+  <param name="robot_description" command="$(find xacro)/xacro '$(find description)/urdf/cobra.urdf.xacro'"/>
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/>
+
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen">
+    <param name="rate" value="30"/> <!-- Hz -->
+    <param name="use_gui" value="false"/>
+    <!-- <param name="publish_default_velocities" value="true"/> -->
+    <!-- <param name="publish_default_efforts"    value="true"/> -->
+  </node>
+</launch>
+

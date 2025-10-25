@@ -1,0 +1,6 @@
+# Cobra Hardware Parameters
+cobra_hardware:
+  port: "/dev/ttyACM0"
+  baud: 115200
+  
+  loop_hz: 50
