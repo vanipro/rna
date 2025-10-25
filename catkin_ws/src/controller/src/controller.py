@@ -7,8 +7,8 @@ import time
 
 import rospy
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import Twist
-from geometry_msgs.msg import Quaternion
+from sensor_msgs.msg import Imu, LaserScan
+from geometry_msgs.msg import Twist, Quaternion
 import tf
 
 # -------------------- Existing Client Setup --------------------
@@ -34,6 +34,7 @@ else:
 
 def send_cmd(v: float, w: float):
     packet = struct.pack("<2f", v, w)
+    print(packet)
     sock_cmd.sendto(packet, (CMD_HOST, CMD_PORT))
 
 def recv_all(sock, size):
@@ -72,6 +73,9 @@ def recv_tel():
 rospy.init_node('udp_diff_ros_client')
 
 odom_pub = rospy.Publisher('/odom', Odometry, queue_size=10)
+imu_pub = rospy.Publisher('/imu', Imu, queue_size=10)
+scan_pub = rospy.Publisher('/scan', LaserScan, queue_size=10)
+
 # Subscriber for velocity commands
 def cmd_vel_cb(msg: Twist):
     send_cmd(msg.linear.x, msg.angular.z)
@@ -81,7 +85,20 @@ rospy.Subscriber('/cmd_vel', Twist, cmd_vel_cb)
 # Odometry message setup
 odom_msg = Odometry()
 odom_msg.header.frame_id = "odom"
-odom_msg.child_frame_id = "base_link"
+odom_msg.child_frame_id = "base_footprint"
+
+imu_msg = Imu()
+imu_msg.header.frame_id = "base_footprint"
+
+scan_msg = LaserScan()
+scan_msg.header.frame_id = "base_footprint"
+scan_msg.angle_min = -math.pi
+scan_msg.angle_max = math.pi
+scan_msg.angle_increment = 0.01  # approximate, depends on your sensor
+scan_msg.time_increment = 0.0
+scan_msg.scan_time = 0.1
+scan_msg.range_min = 0.01
+scan_msg.range_max = 10.0
 
 # TF broadcaster (optional)
 tf_broadcaster = tf.TransformBroadcaster()
@@ -96,9 +113,12 @@ try:
 
         x, y, th, vel, gyro, ranges = tel
         vx, vy, vth = vel
+        wx, wy, wz = gyro
 
         # Publish odometry
         odom_msg.header.stamp = rospy.Time.now()
+        odom_msg.header.frame_id = "map"
+        odom_msg.child_frame_id = "base_footprint"
         odom_msg.pose.pose.position.x = x
         odom_msg.pose.pose.position.y = y
         odom_msg.pose.pose.position.z = 0.0
@@ -112,14 +132,33 @@ try:
 
         odom_pub.publish(odom_msg)
 
-        # Broadcast TF
-        tf_broadcaster.sendTransform(
-            (x, y, 0),
-            quat,
-            rospy.Time.now(),
-            "base_link",
-            "odom"
-        )
+# -------------------- Publish IMU --------------------
+        imu_msg.header.stamp = rospy.Time.now()
+        imu_msg.angular_velocity.x = wx
+        imu_msg.angular_velocity.y = wy
+        imu_msg.angular_velocity.z = wz
+        # Assuming no linear acceleration for now
+        imu_msg.linear_acceleration.x = 0
+        imu_msg.linear_acceleration.y = 0
+        imu_msg.linear_acceleration.z = 0
+        imu_msg.orientation = Quaternion(*quat)
+        imu_pub.publish(imu_msg)
+
+        # -------------------- Publish LaserScan --------------------
+        if ranges:
+            scan_msg.angle_increment = 2 * math.pi / (len(ranges))
+            scan_msg.header.stamp = rospy.Time.now()
+            scan_msg.ranges = list(ranges)
+            scan_pub.publish(scan_msg)
+
+        # -------------------- Broadcast TF --------------------
+        #tf_broadcaster.sendTransform(
+        #    (x, y, 0),
+        #    quat,
+        #    rospy.Time.now(),
+        #    "base_footprint",
+        #    "odom"
+        #)
 
         rate.sleep()
 

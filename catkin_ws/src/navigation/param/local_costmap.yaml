@@ -1,0 +1,16 @@
+local_costmap:
+  global_frame: map
+  robot_base_frame: base_footprint
+  update_frequency: 5.0
+  publish_frequency: 2.0
+  transform_tolerance: 0.5
+  static_map: false  # Мы используем динамические стены, поэтому статическая карта не нужна
+  rolling_window: true
+  width: 0.7
+  height: 0.7
+  resolution: 0.01
+  inscribed_radius: 0.05
+  inflation_radius: 0.15
+  cost_scaling_factor: 2.0
+  obstacle_layer:
+    enabled: false

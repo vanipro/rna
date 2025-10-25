@@ -1,0 +1,3 @@
+NavfnROS:
+  use_grid_path: true
+  allow_unknown: true

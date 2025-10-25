@@ -1,0 +1,35 @@
+global_costmap:
+  global_frame: world
+  robot_base_frame: base_footprint
+  update_frequency: 5.0
+  publish_frequency: 2.0
+  transform_tolerance: 0.3
+  rolling_window: false
+  width: 3.0
+  height: 1.5
+  inflation_radius: 0.5
+  cost_scaling_factor: 30.0
+  resolution: 0.01
+  inscribed_radius: 0.09
+  always_send_full_costmap: true
+  
+  plugins:
+    - {name: static_layer, type: "costmap_2d::StaticLayer"}
+    - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
+
+  static_layer:
+    map_topic: /map
+    first_map_only: false
+    subscribe_to_updates: false
+    use_maximum: false
+    unknown_cost_value: -1
+    trinary_costmap: true
+    track_unknown_space: true
+    enabled: true
+
+  inflation_layer:
+    inflation_radius: 0.5
+    cost_scaling_factor: 30.0
+    inflate_unknown: true
+    inscribed_radius: 0.09
+    enabled: true
