@@ -1,0 +1,35 @@
+# Cobra Robot Physical Parameters
+# This file contains all physical parameters of the robot
+# Used by URDF, hardware interface, and controllers
+
+cobra_robot:
+  # Robot body dimensions (meters)
+  body:
+    mass: 2.375
+    length: 0.23
+    width: 0.08
+    height: 0.19
+  
+  # Wheel parameters (meters)
+  wheel:
+    radius: 0.03725
+    width: 0.020
+    mass: 0.236
+    separation: 0.153  # Distance between left and right wheels
+    base: 0.153        # Same as separation for differential drive
+  
+  # Wheel positions (meters) - relative to base_link
+  wheel_positions:
+    left_front: [0.077, 0.035, 0.0765]
+    left_rear: [-0.077, 0.035, 0.0765]
+    right_front: [0.077, 0.035, -0.0765]
+    right_rear: [-0.077, 0.035, -0.0765]
+  
+  # Joint names
+  joints:
+    left_front: "front_left_wheel"
+    left_rear: "rear_left_wheel"
+    right_front: "front_right_wheel"
+    right_rear: "rear_right_wheel"
+    left_wheel: "left_wheel"      # For hardware interface
+    right_wheel: "right_wheel"    # For hardware interface

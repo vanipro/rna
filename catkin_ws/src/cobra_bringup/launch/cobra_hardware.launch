@@ -1,0 +1,30 @@
+<launch>
+  <!-- Hardware-only launch file for Cobra robot -->
+  
+  <!-- Arguments -->
+  <arg name="port" default="/dev/ttyACM1"/>
+  <arg name="baud" default="115200"/>
+  
+  <!-- Robot description -->
+  <arg name="urdf_file" default="$(find cobra_description)/urdf/cobra.urdf.xacro"/>
+  <param name="robot_description" command="$(find xacro)/xacro $(arg urdf_file)"/>
+
+  <!-- State publishers -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/>
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen"/>
+
+  <!-- Load parameter files -->
+  <rosparam file="$(find cobra_bringup)/config/cobra_params.yaml" command="load"/>
+  <rosparam file="$(find cobra_hardware)/config/controllers.yaml" command="load"/>
+  <rosparam file="$(find cobra_bringup)/config/hardware.yaml" command="load"/>
+
+  <!-- Hardware interface -->
+  <node pkg="cobra_hardware" type="cobra_hardware" name="cobra_hardware" output="screen">
+    <param name="port" value="$(arg port)"/>
+    <param name="baud" value="$(arg baud)"/>
+  </node>
+
+  <!-- Controller manager spawner -->
+  <node pkg="controller_manager" type="spawner" name="controller_spawner"
+        args="joint_state_controller cobra_base_controller" output="screen" />
+</launch>

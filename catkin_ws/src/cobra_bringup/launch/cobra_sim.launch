@@ -1,0 +1,27 @@
+<launch>
+  <!-- Simulation launch file for Cobra robot (no hardware) -->
+  
+  <!-- Robot description -->
+  <arg name="urdf_file" default="$(find cobra_description)/urdf/cobra.urdf.xacro"/>
+  <param name="robot_description" command="$(find xacro)/xacro $(arg urdf_file)"/>
+
+  <!-- State publishers -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/>
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen"/>
+
+  <!-- Load parameter files -->
+  <rosparam file="$(find cobra_bringup)/config/cobra_params.yaml" command="load"/>
+  <rosparam file="$(find cobra_hardware)/config/controllers.yaml" command="load"/>
+
+  <!-- Controller manager spawner -->
+  <node pkg="controller_manager" type="spawner" name="controller_spawner"
+        args="joint_state_controller cobra_base_controller" output="screen" />
+
+  <!-- Teleop for testing -->
+  <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop" output="screen">
+    <remap from="cmd_vel" to="/cobra_base_controller/cmd_vel"/>
+  </node>
+
+  <!-- RViz for visualization -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find cobra_bringup)/rviz/cobra.rviz" output="screen" required="false"/>
+</launch>

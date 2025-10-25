@@ -1,0 +1,18 @@
+<launch>
+  <param name="robot_description" command="$(find xacro)/xacro '$(find cobra_description)/urdf/cobra.urdf.xacro'"/>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" />
+
+  <node pkg="cobra_hardware" type="cobra_hardware" name="cobra_hardware" output="screen">
+    <param name="port" value="/dev/ttyUSB0"/>
+    <param name="baud" value="115200"/>
+    <param name="loop_hz" value="50"/>
+    <param name="wheel_base" value="0.153"/>
+    <param name="wheel_radius" value="0.0745"/>
+    <param name="left_joint" value="left_wheel"/>
+    <param name="right_joint" value="right_wheel"/>
+  </node>
+
+  <rosparam file="$(find cobra_hardware)/config/controllers.yaml" command="load"/>
+  <node pkg="controller_manager" type="spawner" name="spawner"
+        args="joint_state_controller cobra_base_controller" output="screen"/>
+</launch>

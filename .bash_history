@@ -51,3 +51,6 @@ ls
 python3 demo.py 
 exot
 exit
+ls
+catkin_make
+exit
