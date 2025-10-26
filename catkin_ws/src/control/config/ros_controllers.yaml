@@ -17,7 +17,7 @@ cobra:
     pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
     twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
 
-    base_frame_id: base_link
+    base_frame_id: base_footprint
 
     linear:
       x:

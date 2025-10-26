@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="cobra">
 
-	<!-- Robot parameters -->
-	<xacro:arg name="robot_params_file" default="$(find bringup)/config/robot_params.yaml"/>
-
 	<!-- Base (body) params -->
 	<xacro:property name="body_mass"   value="2.375"/>
 	<xacro:property name="body_length" value="0.23525"/>
@@ -28,10 +25,10 @@
 	<!-- ======================== Dummy root link (no inertia) ======================== -->
 
 	<!-- ======================== Base link (robot body) ======================== -->
-	<link name="base_link">
+	<link name="base_footprint">
 		<visual>
 			<!-- Place mesh at physical body center (Z up) -->
-			<origin xyz="0 0 ${body_center_z}" rpy="1.5708 3.14159 -1.5708"/>
+			<origin xyz="0 0 ${body_center_z}" rpy="3.14159 3.14159 -1.5708"/>
 			<geometry>
 				<mesh filename="package://description/meshes/body.stl" scale="0.001 0.001 0.001"/>
 			</geometry>
@@ -60,12 +57,20 @@
 		</inertial>
 	</link>
 
+	<link name="base_scan"/>
+
+	<joint name="scan_joint" type="fixed">
+		<parent link="base_footprint"/>
+		<child link="base_scan"/>
+		<origin xyz="0.0651 0 0.12125" rpy="0 0 0"/>
+  	</joint>
+
 	<!-- ======================== Wheel template ======================== -->
 	<!-- Cylinder is along Z by default; rotate by +90deg about X so its axis aligns with Y (steer/roll axis). -->
 	<xacro:macro name="wheel" params="name">
 		<link name="${name}">
 			<visual>
-				<origin xyz="0 0 0" rpy="1.5708 0 0"/>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
 					<mesh filename="package://description/meshes/wheel.stl" scale="0.001 0.001 0.001"/>
 				</geometry>
@@ -76,7 +81,7 @@
 
 			<collision>
 				<!-- IMPORTANT: same orientation as visual -->
-				<origin xyz="0 0 0" rpy="1.5708 0 0"/>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
 					<cylinder radius="${wheel_radius}" length="${wheel_width}"/>
 				</geometry>
@@ -96,7 +101,7 @@
 
 	<xacro:macro name="wheel_joint" params="jname child xyz rpy:='0 0 0'">
 		<joint name="${jname}" type="continuous">
-			<parent link="base_link"/>
+			<parent link="base_footprint"/>
 			<child  link="${child}"/>
 			<origin xyz="${xyz}" rpy="${rpy}"/>
 			<!-- Wheel rolls about local Y -->

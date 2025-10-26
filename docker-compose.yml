@@ -1,0 +1,19 @@
+services:
+  ttc:
+    build: .
+    container_name: ttc
+    volumes:
+      - .:/root
+    working_dir: /root/catkin_ws
+    # devices:
+    #   - /dev/ttyUSB0:/dev/ttyUSB0
+    #   - /dev/ttyACM1:/dev/ttyACM1
+    environment:
+      - ROS_IP=${HOST_IP}
+      - ROS_HOSTNAME=${HOST_IP}
+      - ROS_MASTER_URI=http://${HOST_IP}:11311
+    tty: true
+    stdin_open: true
+    privileged: true
+    network_mode: host  
+    command: bash

@@ -22,7 +22,7 @@ public:
 
 private:
 	std::shared_ptr<controller_manager::ControllerManager> controller_manager_; 
-    int loop_hz_ = 30;
+    int loop_hz_ = 0;
     ros::Timer    timer_;
     ros::Duration elapsed_time_;
     
@@ -89,7 +89,7 @@ CobraHardware::CobraHardware(ros::NodeHandle& nh_, const std::string& left_front
     timer_ = nh_.createTimer(ros::Duration(1.0 / std::max(1, loop_hz_)), &CobraHardware::tick, this);
     
     // Subscribe to cmd_vel for direct control
-    //cmd_vel_sub_ = nh_.subscribe("/cmd_vel", 1, &CobraHardware::cmdVelCallback, this);
+    cmd_vel_sub_ = nh_.subscribe("/cmd_vel", 1, &CobraHardware::cmdVelCallback, this);
     
     ROS_INFO("CobraHardware node started at %s @ %d, loop %.1d Hz", port_.c_str(), baud_, loop_hz_);
     ROS_INFO("Controller manager initialized and ready for controllers");
@@ -136,8 +136,6 @@ void CobraHardware::recv() {
 		// Simulation mode - generate fake odometry data
 		static double time = 0.0;
 		time += elapsed_time_.toSec();
-		
-		// Simulate wheel movement based on commanded velocities
 		return;
 	}
 
@@ -209,7 +207,7 @@ void CobraHardware::recv() {
 			//joint_velocity_[1] = dtheta_r / dt;
 			
 			// Log received JSON (like controller.py)
-			ROS_INFO("← Received: %s", line.c_str());
+			//ROS_INFO("← Received: %s", line.c_str());
 		}
 	} 
 	catch (const std::exception& e) 
@@ -222,7 +220,6 @@ void CobraHardware::recv() {
 void CobraHardware::send() {
 	if (!ser_.isOpen()) 
 	{
-        //ROS_INFO("---> %f", joint_cmd_[0]);
 		// Simulation mode - no need to send commands to hardware
 		return;
 	}
@@ -242,7 +239,7 @@ void CobraHardware::send() {
         ser_.flush();
         
         // Log sent JSON (like controller.py)
-        ROS_INFO("→ Sent: %s", payload.substr(0, payload.length()-1).c_str());
+        //ROS_INFO("→ Sent: %s", payload.substr(0, payload.length()-1).c_str());
         
     } 
 	catch (const std::exception& e) 

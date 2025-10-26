@@ -1,12 +1,14 @@
 <launch>
-    <rosparam command="load"
-        file="$(find control)/config/ros_controllers.yaml"/>
-
 	<node pkg="control" type="controller" name="robo_hardware" output="screen">
+        <rosparam command="load" file="$(find control)/config/hardware.yaml"/>
 		<remap from="/cobra/mobile_base_controller/cmd_vel" to="/cmd_vel"/>
 	</node>
 
+    <include file="$(find ldlidar_stl_ros)/launch/ld19.launch">
+        <rosparam command="load" file="$(find control)/config/lidar.yaml"/>
+    </include>
 
+    <rosparam command="load" file="$(find control)/config/ros_controllers.yaml"/>
     <node pkg="controller_manager" type="spawner" name="controller_manager" output="screen" 
           args="
                 /cobra/mobile_base_controller
