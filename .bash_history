@@ -58,3 +58,98 @@ rostopic pub /hello std_msgs/String "data: 'hello'"
 export ROS_MASTER_URI=http://192.168.11.153:11311
 rostopic pub /hello std_msgs/String "data: 'hello'" 
 rostopic list
+cms
+rosservice call /driver "T: 600
+rosservice call /driver "T: 0
+body:
+- '"T":132,"IO1":255,"IO2":255'" 
+rosservice call /driver "T: 132
+body:
+- '"IO1":255,"IO2":255'" 
+rosservice call /driver "T: 132
+body:
+- 'IO1:255,IO2:255'" 
+rosservice call /driver "T: 132
+body:
+- 'IO1:255,IO2:255'" 
+rosservice call /driver "T: 132
+body:
+- '"IO1":255,"IO2":255'" 
+rosservice call /driver -r 10 "T: 132
+body:
+- '"IO1":255,"IO2":255'" 
+rosservice call /driver -r 10 "T: 132
+body:
+- '"IO1":255,"IO2":255'" 
+rosservice call /driver "T: 132
+body:
+- '"IO1":255,"IO2":255'" 
+jobs -l
+ps aux
+aux ps
+ps aux
+kill -9 16776
+rosservice call /driver "T: 132
+body:
+- '"IO1":255,"IO2":255'" 
+rosservice call /driver "T: 132
+body:
+- 'IO1:255','IO2:255'" 
+rosservice call /driver "T: 132
+body:
+- 'IO1:255' 'IO2:255'" 
+rosservice call /driver "T: 132
+body:
+- ["IO1:255" "IO2:255"]" 
+rosservice call /driver "T: 132
+body:
+- ['IO1:255' 'IO2:255']" 
+cms
+rosservice call /driver "params:
+- ''" 
+rosservice call /driver "params:
+- 'T:600'" 
+rosservice call /driver "params:
+- 'T:600 L:500'" 
+rosservice call /driver "params:
+- '[T:600 L:500]'" 
+rosservice call /driver "params:
+- 'T:600' 'L:500'" 
+rosservice call /driver "params:
+- ['T:600' 'L:500']" 
+rosservice call /driver "T: 132
+params: ['IO1:255', 'IO2:255']"
+rosservice call /driver "params: ['IO1:255', 'IO2:255']"
+rosservice call /driver "params: ['IO1:255' 'IO2:255']"
+rosservice call /driver "params:
+- 'T:600'" 
+rosservice call /driver "params:
+- 'T:600', 'L:500" 
+rosservice call /driver "params:
+- 'T:600', 'L:500'" 
+rosservice call /driver "params:
+- 'T:600' 'L:500'" 
+rosservice call /driver "params:
+- ['T:600' 'L:500']" 
+rosservice call /driver "params:
+- ['T:600', 'L:500']" 
+rosservice call /driver "params: ['T:600', 'L:500']" 
+rosservice call /driver "params:
+- ''" 
+clear
+rosservice call /driver "T:600 params: ['IO1:255', 'IO2:255']"
+rosservice call /driver "T:600"
+rosservice call /driver "T:600, params: ['IO1:255', 'IO2:255']"
+rosservice call /driver "T: 600
+params:
+- ''" 
+rosservice call /driver "T: 600
+params: ['IO1:255']" 
+rosservice call /driver "T: 600
+params: ['IO1:255', 'IO2:255]" 
+rosservice call /driver "T: 600
+params: ['IO1:255', 'IO2:255]'" 
+clear
+rosservice call /driver "T: 600
+params: ['IO1:255', 'IO2:255']" 
+exit

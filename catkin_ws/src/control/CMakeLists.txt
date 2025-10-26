@@ -22,6 +22,16 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(nlohmann_json 3.2.0 QUIET)
 
+add_service_files(
+  FILES
+  DriverCmd.srv
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
+
 catkin_package(
   CATKIN_DEPENDS
     roscpp
