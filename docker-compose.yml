@@ -8,6 +8,7 @@ services:
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
       - /dev/ttyACM1:/dev/ttyACM1
+      - /dev/spidev0.0:/dev/spidev0.0
     environment:
       - ROS_IP=${HOST_IP}
       - ROS_HOSTNAME=${HOST_IP}
