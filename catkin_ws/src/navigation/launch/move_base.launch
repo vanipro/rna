@@ -10,6 +10,7 @@
         args="$(arg initial_x) $(arg initial_y) 0 0 0 0 $(arg map_frame) $(arg odom_frame) 100" />
 
   <node pkg="laser_scan_matcher" type="laser_scan_matcher_node" respawn="false" name="laser_matcher" output="screen">
+    <remap from="/odom" to="/cobra/mobile_base_controller/odom" />
     <param name="fixed_frame" value="$(arg odom_frame)" />
     <param name="base_frame" value="$(arg base_frame)" />
 

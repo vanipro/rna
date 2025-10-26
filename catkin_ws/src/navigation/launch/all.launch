@@ -1,10 +1,10 @@
 <launch>
   <include file="$(find control)/launch/load.launch">
-    <arg name="use_hardware" value="false" />
+    <arg name="use_hardware" value="true" />
   </include>
 
   <include file="$(find navigation)/launch/move_base.launch" />
 
-  <node pkg="rviz" type="rviz" name="rviz" required="true"
-        args="-d $(find navigation)/rviz/default.rviz"/>
+  <!--<node pkg="rviz" type="rviz" name="rviz" required="true"
+        args="-d $(find navigation)/rviz/default.rviz"/>-->
 </launch>

@@ -26,7 +26,8 @@ RUN apt-get update && apt-get install -y \
 	ros-noetic-costmap-2d \
 	ros-noetic-cv-bridge \
 	ros-noetic-image-transport \
-	ros-noetic-move-base
+	ros-noetic-move-base \
+	ros-noetic-laser-scan-matcher
 
 COPY catkin_ws /root/catkin_ws
 WORKDIR /root/catkin_ws

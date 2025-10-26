@@ -83,7 +83,7 @@ void MapLayer::laserScanCallback(const sensor_msgs::LaserScan::ConstPtr& msg)
     sensor_msgs::PointCloud2 cloud_in_laser, cloud_in_map;
 
     try {
-        projector_.projectLaser(*msg, cloud_in_laser);
+        projector_.projectLaser(*msg, cloud_in_laser, 50.0, laser_geometry::channel_option::Index);
 
         tf_buffer_.transform(cloud_in_laser, cloud_in_map, global_frame_, ros::Duration(0.1));
             
@@ -103,12 +103,19 @@ void MapLayer::laserScanCallback(const sensor_msgs::LaserScan::ConstPtr& msg)
     if(weighted_points_.rows != actual_weights.rows || weighted_points_.cols != actual_weights.cols)
         ROS_ASSERT("Bad size");
 
+    bool has_x = false, has_y = false, has_z = false;
+for (const auto& field : cloud_in_map.fields) {
+	if(field.name == "x") has_x = true;
+	if(field.name == "y") has_y = true;
+	if(field.name == "z") has_z = true;
+}
+	if(!has_x || !has_y || !has_z) return;
     sensor_msgs::PointCloud2ConstIterator<float> iter_x(cloud_in_map, "x");
     sensor_msgs::PointCloud2ConstIterator<float> iter_y(cloud_in_map, "y");
     sensor_msgs::PointCloud2ConstIterator<float> iter_z(cloud_in_map, "z");
     //for(size_t i = 0; i < msg->ranges.size(); ++i)
     //{
-    for (; iter_x != iter_x.end(); ++iter_x, ++iter_y, ++iter_z) {
+    for (;iter_x != iter_x.end(); ++iter_x, ++iter_y, ++iter_z) {
         float x = *iter_x;
         float y = *iter_y;
         float z = *iter_z;
@@ -124,7 +131,7 @@ void MapLayer::laserScanCallback(const sensor_msgs::LaserScan::ConstPtr& msg)
         //angle = msg->angle_min + double(i) * msg->angle_increment;
         laser_point.point.x = x;
         laser_point.point.y = y;
-
+	if(std::isinf(x) || std::isinf(y)) continue;
         tf2::doTransform(laser_point, map_point, transform);
 
         if(worldToImage(laser_point.point.x, laser_point.point.y, ix, iy))

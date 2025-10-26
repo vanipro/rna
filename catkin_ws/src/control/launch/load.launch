@@ -7,7 +7,10 @@
         </node>
 
         <include file="$(find ldlidar_stl_ros)/launch/ld19.launch">
-            <rosparam command="load" file="$(find control)/config/lidar.yaml"/>
+            <arg name="port_name" value="/dev/ttyUSB0" />
+            <arg name="port_baudrate" value="230400" />
+
+            <arg name="frame_id" value="base_scan" />
         </include>
 
         <rosparam command="load" file="$(find control)/config/ros_controllers.yaml"/>
