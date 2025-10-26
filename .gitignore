@@ -3,3 +3,5 @@ catkin_ws/build*
 
 .ros/
 .vscode/
+
+.bash_history
