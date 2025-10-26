@@ -26,17 +26,6 @@
 	<xacro:property name="right_rear_anchor"  value="-0.077 -0.0765 ${wheel_radius}"/>
 
 	<!-- ======================== Dummy root link (no inertia) ======================== -->
-	<link name="base_footprint">
-		<visual>
-			<origin xyz="0 0 0" rpy="0 0 0"/>
-			<geometry>
-				<box size="0.01 0.01 0.01"/>
-			</geometry>
-			<material name="transparent">
-				<color rgba="0 0 0 0"/>
-			</material>
-		</visual>
-	</link>
 
 	<!-- ======================== Base link (robot body) ======================== -->
 	<link name="base_link">
@@ -70,13 +59,6 @@
 				izz="0.011736458333333333"/>
 		</inertial>
 	</link>
-
-	<!-- ======================== Base footprint to base link joint ======================== -->
-	<joint name="base_footprint_joint" type="fixed">
-		<parent link="base_footprint"/>
-		<child link="base_link"/>
-		<origin xyz="0 0 0" rpy="0 0 0"/>
-	</joint>
 
 	<!-- ======================== Wheel template ======================== -->
 	<!-- Cylinder is along Z by default; rotate by +90deg about X so its axis aligns with Y (steer/roll axis). -->
