@@ -1,9 +1,10 @@
 HOST = r61
 BASE = /home/user
+HOSTNAME := $(shell hostname -I | awk '{print $$1}')
 
 
 up:
-	echo "HOST_IP=$(hostname -I | awk '{print $1}')" > .env
+	echo "HOST_IP=$(HOSTNAME)" > .env
 	docker compose up -d 
 	docker exec -it ttc bash
 
