@@ -52,6 +52,8 @@
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
     <param name="base_global_planner" value="navfn/NavfnROS" />
+
+    <remap from="/cmd_vel" to="/cobra/mobile_base_controller/cmd_vel" />
     
     <rosparam file="$(find navigation)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find navigation)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />

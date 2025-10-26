@@ -22,7 +22,7 @@ public:
 
 private:
 	std::shared_ptr<controller_manager::ControllerManager> controller_manager_; 
-    int loop_hz_ = 0;
+    int loop_hz_ = 30;
     ros::Timer    timer_;
     ros::Duration elapsed_time_;
     
@@ -89,7 +89,7 @@ CobraHardware::CobraHardware(ros::NodeHandle& nh_, const std::string& left_front
     timer_ = nh_.createTimer(ros::Duration(1.0 / std::max(1, loop_hz_)), &CobraHardware::tick, this);
     
     // Subscribe to cmd_vel for direct control
-    cmd_vel_sub_ = nh_.subscribe("/cmd_vel", 1, &CobraHardware::cmdVelCallback, this);
+    //cmd_vel_sub_ = nh_.subscribe("/cmd_vel", 1, &CobraHardware::cmdVelCallback, this);
     
     ROS_INFO("CobraHardware node started at %s @ %d, loop %.1d Hz", port_.c_str(), baud_, loop_hz_);
     ROS_INFO("Controller manager initialized and ready for controllers");

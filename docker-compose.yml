@@ -2,9 +2,9 @@ services:
   ttc:
     build: .
     container_name: ttc
-    volumes:
-      - .:/root
     working_dir: /root/catkin_ws
+    volumes:
+      - ./:/root
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
       - /dev/ttyACM1:/dev/ttyACM1
@@ -16,4 +16,9 @@ services:
     stdin_open: true
     privileged: true
     network_mode: host  
-    command: bash
+    command: >
+      bash -c "
+      echo 'source /opt/ros/noetic/setup.sh' >> /root/.bashrc &&
+      echo 'source /root/catkin_ws/devel/setup.sh' >> /root/.bashrc &&
+      echo 'alias cms=\"cd /root/catkin_ws; catkin_make && source devel/setup.bash; cd -\"' >> /root/.bashrc &&
+      bash"
