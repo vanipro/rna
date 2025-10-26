@@ -58,5 +58,14 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+
+
+alias cms='cd /root/catkin_ws; catkin_make && source devel/setup.bash; cd -'
+
 source /opt/ros/noetic/setup.sh
 source /root/catkin_ws/devel/setup.sh
+
+export ROS_IP=$(hostname -I | awk '{print $1}')
+export ROS_HOSTNAME=$(hostname -I | awk '{print $1}')
+export ROS_MASTER_URI=http://$(hostname -I | awk '{print $1}'):11311
+

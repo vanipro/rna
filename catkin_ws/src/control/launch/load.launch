@@ -1,0 +1,34 @@
+<launch>
+    <arg name="use_hardware" default="true" />
+
+    <group if="$(arg use_hardware)">
+        <node pkg="control" type="controller" name="robo_hardware" output="screen">
+            <rosparam command="load" file="$(find control)/config/hardware.yaml"/>
+        </node>
+
+        <include file="$(find ldlidar_stl_ros)/launch/ld19.launch">
+            <rosparam command="load" file="$(find control)/config/lidar.yaml"/>
+        </include>
+
+        <rosparam command="load" file="$(find control)/config/ros_controllers.yaml"/>
+        <node pkg="controller_manager" type="spawner" name="controller_manager" output="screen" 
+            args="
+                    /cobra/mobile_base_controller
+                    /cobra/joint_state_controller">
+
+            <remap from="/cobra/mobile_base_controller/cmd_vel" to="/cmd_vel"/>
+            <remap from="/cobra/mobile_base_controller/odom" to="/odom"/>
+        </node>
+    </group>
+
+    <group unless="$(arg use_hardware)">
+        <node pkg="control" type="udp_controller.py" name="udp_controller" output="screen"/>
+
+        <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher">
+            <remap from="robot_description" to="robot_description" />
+            <param name="rate" type="double" value="30.0" />
+        </node>
+    </group>
+
+    <include file="$(find description)/launch/load.launch" />
+</launch>

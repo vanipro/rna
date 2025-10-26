@@ -1,0 +1,34 @@
+cobra:          
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+
+  mobile_base_controller:
+    type: diff_drive_controller/DiffDriveController
+    publish_rate: 50
+
+    left_wheel: 'left_front_wheel_joint'
+    right_wheel: 'right_front_wheel_joint'
+
+    wheel_separation: 0.153
+    wheel_radius: 0.0745
+
+    pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
+    twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
+
+    base_frame_id: base_footprint
+    odom_frame_id: map
+
+    linear:
+      x:
+        has_velocity_limits    : true
+        max_velocity           : 0.3
+        has_acceleration_limits: true
+        max_acceleration       : 0.6
+    angular:
+      z:
+        has_velocity_limits    : true
+        max_velocity           : 8.0
+        has_acceleration_limits: true
+        max_acceleration       : 6.0

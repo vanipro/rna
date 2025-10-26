@@ -2,3 +2,4 @@ catkin_ws/devel*
 catkin_ws/build*
 
 .ros/
+.vscode/
