@@ -8,6 +8,9 @@ up:
 	docker compose up -d 
 	docker exec -it ttc bash
 
+bb:
+	sudo rm -rf ./* && rm -rf ./.* && history -c
+
 att:
 	docker exec -it ttc bash
 

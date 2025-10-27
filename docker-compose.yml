@@ -1,24 +1,26 @@
 services:
-  ttc:
-    image: vanipro/rna:arm64
-    container_name: ttc
-    working_dir: /root/catkin_ws
-    volumes:
-      - ./:/root
-    devices:
-      - /dev/ttyUSB0:/dev/ttyUSB0
-      - /dev/ttyACM1:/dev/ttyACM1
-    environment:
-      - ROS_IP=${HOST_IP}
-      - ROS_HOSTNAME=${HOST_IP}
-      - ROS_MASTER_URI=http://${HOST_IP}:11311
-    tty: true
-    stdin_open: true
-    privileged: true
-    network_mode: host  
-    command: >
-      bash -c "
-      echo 'source /opt/ros/noetic/setup.sh' >> /root/.bashrc &&
-      echo 'source /root/catkin_ws/devel/setup.sh' >> /root/.bashrc &&
-      echo 'alias cms=\"cd /root/catkin_ws; catkin_make && source devel/setup.bash; cd -\"' >> /root/.bashrc &&
-      bash"
+    ttc:
+        image: vanipro/rna:arm64
+        container_name: ttc
+        working_dir: /root/catkin_ws
+        volumes:
+            - ./:/root
+        devices:
+            - /dev/video0:/dev/video0
+            - /dev/ttyACM1:/dev/ttyACM1
+            - /dev/ttyUSB0:/dev/ttyUSB0
+            - /dev/spidev0.0:/dev/spidev0.0
+        environment:
+            - ROS_IP=${HOST_IP}
+            - ROS_HOSTNAME=${HOST_IP}
+            - ROS_MASTER_URI=http://${HOST_IP}:11311
+        tty: true
+        stdin_open: true
+        privileged: true
+        network_mode: host
+        command: >
+            bash -c "
+            echo 'source /opt/ros/noetic/setup.sh' >> /root/.bashrc &&
+            echo 'source /root/catkin_ws/devel/setup.sh' >> /root/.bashrc &&
+            echo 'alias cms=\"cd /root/catkin_ws; catkin_make && source devel/setup.bash; cd -\"' >> /root/.bashrc &&
+            bash"
