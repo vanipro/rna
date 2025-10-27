@@ -5,7 +5,7 @@ sudo apt-get -y update && apt-get -y install ca-certificates curl vim git
 sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-git clone "https://$1@github.com/vanipro/rozen-nonka-aurus" rna && mv rna/* . && sudo rm -rf rna
+git clone "https://$1@github.com/vanipro/rna" rna && mv rna/* . && sudo rm -rf rna
 
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
