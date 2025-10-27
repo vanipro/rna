@@ -17,6 +17,13 @@ lev:
 loc: 
 	docker run --rm --name ttc -p 8765:8765 -it -v ./:/root -w /root/catkin_ws ttc
 
+pub-img:
+	docker buildx build --platform linux/amd64,linux/arm64 \
+		-t vanipro/rna:amd64 \
+		-t vanipro/rna:arm64 \
+		-t vanipro/rna:latest \
+		--push .
+
 put:
 	rsync -avz -e "ssh -o Compression=yes" --progress \
 		--relative $(filter-out $@,$(MAKECMDGOALS)) $(HOST):$(BASE)/

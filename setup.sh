@@ -24,5 +24,6 @@ sudo systemctl enable --now docker
 sudo usermod -aG docker $USER
 newgrp docker
 
-docker build -t ttc .
+# docker build -t ttc .
+docker pull vanipro/rna:arm64
 

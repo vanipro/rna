@@ -1,6 +1,6 @@
 services:
   ttc:
-    build: .
+    image: vanipro/rna:arm64
     container_name: ttc
     working_dir: /root/catkin_ws
     volumes:
