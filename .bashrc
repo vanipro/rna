@@ -71,3 +71,6 @@ export ROS_MASTER_URI=http://$(hostname -I | awk '{print $1}'):11311
 source /opt/ros/noetic/setup.sh
 source /root/catkin_ws/devel/setup.sh
 alias cms="cd /root/catkin_ws; catkin_make && source devel/setup.bash; cd -"
+source /opt/ros/noetic/setup.sh
+source /root/catkin_ws/devel/setup.sh
+alias cms="cd /root/catkin_ws; catkin_make && source devel/setup.bash; cd -"

@@ -1,44 +1,30 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="cobra">
+	<xacro:property name="wheel_mass"   value="0.23126"/>
+	<xacro:property name="wheel_width"  value="0.02000"/>
+	<xacro:property name="wheel_radius" value="0.03726"/>
 
-	<!-- Base (body) params -->
 	<xacro:property name="body_mass"   value="2.375"/>
+	<xacro:property name="body_width"  value="0.179"/>
+	<xacro:property name="body_height" value="0.200"/>
 	<xacro:property name="body_length" value="0.23525"/>
-	<xacro:property name="body_width"  value="0.173"/>
-	<xacro:property name="body_height" value="0.10124"/>
+	<xacro:property name="body_center_z" value="${wheel_radius}"/>
 
-	<!-- Wheel params -->
-	<xacro:property name="wheel_radius" value="0.03725"/>
-	<xacro:property name="wheel_width"  value="0.020"/>
-	<xacro:property name="wheel_mass"   value="0.236"/>
-
-	<!-- Convenience -->
-	<xacro:property name="body_center_z" value="0.03725"/>
-
-	<!-- Wheel anchor positions: X forward, Y left/right, Z up -->
-	<!-- Track ~153mm => |Y|=0.0765; wheel centers at Z=wheel_radius -->
-	<xacro:property name="left_front_anchor"  value=" 0.077  0.0765 ${wheel_radius}"/>
-	<xacro:property name="left_rear_anchor"   value="-0.077  0.0765 ${wheel_radius}"/>
-	<xacro:property name="right_front_anchor" value=" 0.077 -0.0765 ${wheel_radius}"/>
-	<xacro:property name="right_rear_anchor"  value="-0.077 -0.0765 ${wheel_radius}"/>
-
-	<!-- ======================== Dummy root link (no inertia) ======================== -->
+	<xacro:property name="left_front_anchor"  value=" 0.0795  0.0770 ${wheel_radius}"/>
+	<xacro:property name="left_rear_anchor"   value="-0.0795  0.0770 ${wheel_radius}"/>
+	<xacro:property name="right_front_anchor" value=" 0.0795 -0.0770 ${wheel_radius}"/>
+	<xacro:property name="right_rear_anchor"  value="-0.0795 -0.0770 ${wheel_radius}"/>
 
 	<!-- ======================== Base link (robot body) ======================== -->
 	<link name="base_footprint">
 		<visual>
-			<!-- Place mesh at physical body center (Z up) -->
 			<origin xyz="0 0 ${body_center_z}" rpy="3.14159 3.14159 -1.5708"/>
 			<geometry>
-				<mesh filename="package://description/meshes/body.stl" scale="0.001 0.001 0.001"/>
+				<mesh filename="package://description/meshes/cobra_body.dae" scale="0.001 0.001 0.001"/>
 			</geometry>
-			<material name="body_material">
-				<color rgba="0.75 0.75 0.75 1.0"/>
-			</material>
 		</visual>
 
 		<collision>
-			<!-- Collision box centered at the body center -->
 			<origin xyz="0 0 ${body_center_z}" rpy="0 0 0"/>
 			<geometry>
 				<box size="${body_length} ${body_width} ${body_height}"/>
@@ -46,10 +32,8 @@
 		</collision>
 
 		<inertial>
-			<!-- COM at the body center (same as visual/collision) -->
 			<origin xyz="0 0 ${body_center_z}" rpy="0 0 0"/>
 			<mass value="${body_mass}"/>
-			<!-- Box inertia: Ixx=1/12*m*(y^2+z^2), Iyy=1/12*m*(x^2+z^2), Izz=1/12*m*(x^2+y^2) -->
 			<inertia
 				ixx="0.008411458333333333" ixy="0" ixz="0"
 				iyy="0.017614583333333333" iyz="0"
@@ -57,31 +41,38 @@
 		</inertial>
 	</link>
 
-	<link name="base_scan"/>
 
+	<!-- ======================== Base cam (robot camera) ======================== -->
+	<!-- <link name="base_cam"/> -->
+	<!-- <joint name="cam_joint" type="fixed"> -->
+	<!-- 	<parent link="base_footprint"/> -->
+	<!-- 	<child link="base_cam"/> -->
+	<!-- 	<origin xyz="-0.094121 -0.00900 0.19138" rpy="0 0.34907 0"/> -->
+	<!-- </joint> -->
+
+	<!-- ======================== Base scan (lidar) ======================== -->
+	<link name="base_scan"/>
 	<joint name="scan_joint" type="fixed">
 		<parent link="base_footprint"/>
 		<child link="base_scan"/>
-		<origin xyz="0.0651 0 0.12125" rpy="0 0 0"/>
-  	</joint>
+		<origin xyz="0.068376 -0.00385 0.11971" rpy="0 0 0"/>
+	</joint>
 
 	<!-- ======================== Wheel template ======================== -->
-	<!-- Cylinder is along Z by default; rotate by +90deg about X so its axis aligns with Y (steer/roll axis). -->
-	<xacro:macro name="wheel" params="name">
+	<xacro:macro name="wheel" params="name side">
 		<link name="${name}">
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://description/meshes/wheel.stl" scale="0.001 0.001 0.001"/>
+					<mesh filename="package://description/meshes/cobra_wheel_${side}.stl" scale="0.001 0.001 0.001"/>
 				</geometry>
 				<material name="wheel_material">
-					<color rgba="0.1 0.1 0.1 1.0"/>
+					<color rgba="0.05 0.05 0.05 1.0"/>
 				</material>
 			</visual>
 
 			<collision>
-				<!-- IMPORTANT: same orientation as visual -->
-				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<origin xyz="0 0 0" rpy="1.5708 0 0"/>
 				<geometry>
 					<cylinder radius="${wheel_radius}" length="${wheel_width}"/>
 				</geometry>
@@ -90,7 +81,6 @@
 			<inertial>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<mass value="${wheel_mass}"/>
-				<!-- Solid cylinder inertia: Iy=0.5*m*r^2 (axis), Iperp=1/12*m*(3r^2+L^2) -->
 				<inertia
 					ixx="8.973285416666667e-05" ixy="0" ixz="0"
 					iyy="1.6373237499999998e-04" iyz="0"
@@ -104,27 +94,20 @@
 			<parent link="base_footprint"/>
 			<child  link="${child}"/>
 			<origin xyz="${xyz}" rpy="${rpy}"/>
-			<!-- Wheel rolls about local Y -->
 			<axis xyz="0 1 0"/>
 		</joint>
 	</xacro:macro>
 
 	<!-- ======================== Wheels ======================== -->
-	<!-- Left front -->
-	<xacro:wheel name="left_front_wheel"/>
-	<xacro:wheel_joint jname="left_front_wheel_joint" child="left_front_wheel" xyz="${left_front_anchor}" rpy="0 0 0"/>
+	<xacro:wheel name="left_rear_wheel" side="left"/>
+	<xacro:wheel_joint jname="left_rear_wheel_joint" child="left_rear_wheel" xyz="${left_rear_anchor}" rpy="0 -1.5708 3.14159"/>
 
-	<!-- Left rear -->
-	<xacro:wheel name="left_rear_wheel"/>
-	<xacro:wheel_joint jname="left_rear_wheel_joint" child="left_rear_wheel" xyz="${left_rear_anchor}" rpy="0 0 0"/>
+	<xacro:wheel name="left_front_wheel" side="left"/>
+	<xacro:wheel_joint jname="left_front_wheel_joint" child="left_front_wheel" xyz="${left_front_anchor}" rpy="0 -1.5708 3.14159"/>
 
-	<!-- Right front -->
-	<xacro:wheel name="right_front_wheel"/>
-	<xacro:wheel_joint jname="right_front_wheel_joint" child="right_front_wheel" xyz="${right_front_anchor}" rpy="0 3.14159 0"/>
+	<xacro:wheel name="right_rear_wheel" side="right"/>
+	<xacro:wheel_joint jname="right_rear_wheel_joint" child="right_rear_wheel" xyz="${right_rear_anchor}" rpy="0 0 0"/>
 
-	<!-- Right rear -->
-	<xacro:wheel name="right_rear_wheel"/>
-	<xacro:wheel_joint jname="right_rear_wheel_joint" child="right_rear_wheel" xyz="${right_rear_anchor}" rpy="0 3.14159 0"/>
-
+	<xacro:wheel name="right_front_wheel" side="right"/>
+	<xacro:wheel_joint jname="right_front_wheel_joint" child="right_front_wheel" xyz="${right_front_anchor}" rpy="0 0 0"/>
 </robot>
-

@@ -2,6 +2,8 @@ catkin_ws/devel*
 catkin_ws/build*
 
 .ros/
+.cache/
 .vscode/
 
 .env
+

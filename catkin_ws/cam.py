@@ -21,7 +21,7 @@ def main():
 
     cap = cv2.VideoCapture(0)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 180)
     cap.set(cv2.CAP_PROP_FPS, 30)
 
     while not rospy.is_shutdown():

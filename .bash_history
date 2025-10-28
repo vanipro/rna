@@ -5,3 +5,5 @@ python3 cam.py
 clear
 exot
 exit
+cms
+exit
