@@ -20,8 +20,4 @@ services:
         network_mode: host
         command: >
             bash -c "
-            source /opt/ros/noetic/setup.sh &&
-            source /root/catkin_ws/devel/setup.sh &&
-            catkin_make &&
-            source /root/catkin_ws/devel/setup.sh &&
-            roslaunch navigation all.launch"
+            bash"
