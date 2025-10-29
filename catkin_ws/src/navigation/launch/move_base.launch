@@ -25,9 +25,9 @@
     <param name="publish_pose_stamped" value="false" />
 
     <param name="max_iterations" value="20" />
-    <param name="max_correspondence_dist" value="0.15" />
-    <param name="max_angular_correction_deg" value="7" />
-    <param name="max_linear_correction" value="0.15" />
+    <param name="max_correspondence_dist" value="0.3" />
+    <param name="max_angular_correction_deg" value="15" />
+    <param name="max_linear_correction" value="0.3" />
     <param name="epsilon_xy" value="0.01" />
     <param name="epsilon_theta" value="0.001" />
     <param name="outliers_maxPerc" value="0.9" />
@@ -39,14 +39,14 @@
     <param name="fading_gradient" value="0.4" />
     <param name="debug_frequency" value="5" />
     <param name="update_frequency" value="10" />
-    <param name="cell_size" value="0.3749" />
-    <param name="max_segment_angle" value="5.0" />
-    <param name="max_segment_distance" value="0.05" />
-    <param name="min_segment_overlap" value="0.5" />
+    <param name="cell_size" value="0.374" />
+    <param name="max_segment_angle" value="11.0" />
+    <param name="max_segment_distance" value="0.1" />
+    <param name="min_segment_overlap" value="0.45" />
     <param name="global_frame" value="$(arg map_frame)" />
     <param name="resolution" value="0.01" />
-    <param name="width" value="3.0" />
-    <param name="height" value="1.5" />
+    <param name="width" value="1.5" />
+    <param name="height" value="3.0" />
   </node>
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
@@ -63,4 +63,6 @@
     <rosparam file="$(find navigation)/param/local_planner.yaml" command="load" />
     <rosparam file="$(find navigation)/param/global_planner.yaml" command="load" />
   </node>
+
+  <node name="goal_publisher" pkg="control" type="publish_goal.py" output="screen"/>
 </launch>

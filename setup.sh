@@ -16,3 +16,6 @@ sudo apt-get -y update && apt-get -y install docker-ce docker-ce-cli containerd.
 sudo systemctl enable --now docker
 sudo usermod -aG docker $USER
 newgrp docker
+
+docker pull vanipro/rna:arm64
+make up

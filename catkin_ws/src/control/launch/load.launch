@@ -25,7 +25,9 @@
     </group>
 
     <group unless="$(arg use_hardware)">
-        <node pkg="control" type="udp_controller.py" name="udp_controller" output="screen"/>
+        <node pkg="control" type="udp_controller.py" name="udp_controller" output="screen">
+            <remap from="/cmd_vel" to="/cobra/mobile_base_controller/cmd_vel" />
+        </node>
 
         <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher">
             <remap from="robot_description" to="robot_description" />
