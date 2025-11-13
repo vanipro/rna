@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="cobra">
+	<xacro:property name="wheel_mass"   value="0.236"/>
+	<xacro:property name="wheel_width"  value="0.02025"/>
+	<xacro:property name="wheel_radius" value="0.03750"/>
+
+	<xacro:property name="body_mass"   value="2.375"/>
+	<xacro:property name="body_width"  value="0.110"/>
+	<xacro:property name="body_height" value="0.150"/>
+	<xacro:property name="body_length" value="0.200"/>
+	<xacro:property name="body_center_z" value="0.08200"/>
+
+	<!-- ======================== Base link (robot body) ======================== -->
+	<link name="base_footprint">
+		<visual>
+			<origin xyz="0 0 0.08200" rpy="3.14159 3.14159 -1.5708"/>
+			<geometry>
+				<mesh filename="package://description/meshes/rover_base.dae" scale="0.001 0.001 0.001"/>
+			</geometry>
+		</visual>
+
+		<collision>
+			<origin xyz="0 0 ${body_center_z}" rpy="0 0 0"/>
+			<geometry>
+				<box size="${body_length} ${body_width} ${body_height}"/>
+			</geometry>
+		</collision>
+
+		<inertial>
+			<origin xyz="0 0 ${body_center_z}" rpy="0 0 0"/>
+			<mass value="${body_mass}"/>
+			<inertia
+				ixx="0.008411458333333333" ixy="0" ixz="0"
+				iyy="0.017614583333333333" iyz="0"
+				izz="0.011736458333333333"/>
+		</inertial>
+	</link>
+
+	<!-- ======================== Base scan (lidar) ======================== -->
+	<link name="base_scan"/>
+	<joint name="scan_joint" type="fixed">
+		<parent link="base_footprint"/>
+		<child link="base_scan"/>
+		<origin xyz="0.0 -0.0 0.144" rpy="0 0 0"/>
+	</joint>
+
+	<!-- front left wheel -->
+    <link name="front_left_servo_mount">
+        <visual>
+            <origin xyz="0.0 0.0 -0.04500" rpy="0.0 0.0 3.14159"/>
+            <geometry>
+                <mesh filename="package://description/meshes/rover_servo_mount.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="front_left_servo_joint" type="revolute">
+        <parent link="base_footprint"/>
+        <child link="front_left_servo_mount"/>
+        <origin xyz="0.062966 0.044875 0.08200" rpy="0.0 0.0 0.0"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-1.57" upper="1.57" effort="10" velocity="1.0"/>
+    </joint>
+    <link name="front_left_wheel">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 3.14159"/>
+            <geometry>
+                <mesh filename="package://description/meshes/ddsm_400.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+    </link>
+    <joint name="front_left_wheel_joint" type="continuous">
+        <parent link="front_left_servo_mount"/>
+        <child link="front_left_wheel"/>
+        <origin xyz="0.0 0.0 -0.04500" rpy="0.0 0.0 0.0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <!-- back left wheel -->
+    <link name="back_left_servo_mount">
+        <visual>
+            <origin xyz="0.0 0.0 -0.04500" rpy="0.0 0.0 3.14159"/>
+            <geometry>
+                <mesh filename="package://description/meshes/rover_servo_mount.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="back_left_servo_joint" type="revolute">
+        <parent link="base_footprint"/>
+        <child link="back_left_servo_mount"/>
+        <origin xyz="-0.062966 0.044875 0.08200" rpy="0.0 0.0 0.0"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-1.57" upper="1.57" effort="10" velocity="1.0"/>
+    </joint>
+    <link name="back_left_wheel">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 3.14159"/>
+            <geometry>
+                <mesh filename="package://description/meshes/ddsm_400.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+    </link>
+    <joint name="back_left_wheel_joint" type="continuous">
+        <parent link="back_left_servo_mount"/>
+        <child link="back_left_wheel"/>
+        <origin xyz="0.0 0.0 -0.04500" rpy="0.0 0.0 0.0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <!-- front right wheel -->
+    <link name="front_right_servo_mount">
+        <visual>
+            <origin xyz="0.0 0.0 -0.04500" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://description/meshes/rover_servo_mount.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="front_right_servo_joint" type="revolute">
+        <parent link="base_footprint"/>
+        <child link="front_right_servo_mount"/>
+        <origin xyz="0.062966 -0.044875 0.08200" rpy="0.0 0.0 0.0"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-1.57" upper="1.57" effort="10" velocity="1.0"/>
+    </joint>
+    <link name="front_right_wheel">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://description/meshes/ddsm_400.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+    </link>
+    <joint name="front_right_wheel_joint" type="continuous">
+        <parent link="front_right_servo_mount"/>
+        <child link="front_right_wheel"/>
+        <origin xyz="0.0 0.0 -0.04500" rpy="0.0 0.0 0.0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+
+    <!-- back right wheel -->
+    <link name="back_right_servo_mount">
+        <visual>
+            <origin xyz="0.0 0.0 -0.04500" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://description/meshes/rover_servo_mount.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+    </link>
+    <joint name="back_right_servo_joint" type="revolute">
+        <parent link="base_footprint"/>
+        <child link="back_right_servo_mount"/>
+        <origin xyz="-0.062966 -0.044875 0.08200" rpy="0.0 0.0 0.0"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="-1.57" upper="1.57" effort="10" velocity="1.0"/>
+    </joint>
+    <link name="back_right_wheel">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://description/meshes/ddsm_400.dae" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="1.5708 0.0 0.0"/>
+            <geometry>
+                <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+            </geometry>
+        </collision>
+    </link>
+    <joint name="back_right_wheel_joint" type="continuous">
+        <parent link="back_right_servo_mount"/>
+        <child link="back_right_wheel"/>
+        <origin xyz="0.0 0.0 -0.04500" rpy="0.0 0.0 0.0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+</robot>
